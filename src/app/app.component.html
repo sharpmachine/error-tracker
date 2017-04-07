@@ -1,3 +1,64 @@
-<h1>
-  {{title}}
-</h1>
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#">Error Tracker</a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <!--<ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>-->
+    <form class="form-inline my-2 my-lg-0 pull-right">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" [(ngModel)]="term" name="search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+<div class="container-fluid">
+
+  <!--<div *ngFor="let error of errors ">{{error | json}}</div>-->
+
+
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>Today's Errors <span class="badge badge-pill badge-danger">{{errors?.length}}</span></h3>
+      <div class="list-group">
+        <a href="#" *ngFor="let error of errors | filterBy:{'url': term}" class="list-group-item list-group-item-action list-group-item-danger flex-column align-items-start"
+          (click)="selectError(error)">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{error.title ? error.title : error.message}}</h5>
+            <small>3 days ago</small>
+          </div>
+          <p class="mb-1">{{error.message}}</p>
+          <small *ngIf="error.user"><strong>User:</strong> {{error.user.unique_name}}</small>
+        </a>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <h3>Error Details</h3>
+      <div *ngIf="selectedError">
+        <!--<pre>{{selectedError | json}}</pre>-->
+        <h4>ID: {{selectedError.id}} {{selectedError.title ? '| ' + selectedError.title : ''}}</h4>
+        <p>{{selectedError.message}}</p>
+        <p>
+          <small><strong>URL:</strong> {{selectedError.url}}</small>
+        </p>
+        <pre>{{selectedError.stack | json}}</pre>
+        <div *ngIf="selectedError.user">
+          <h5>User Details</h5>
+          <pre>{{selectedError.user | json }}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
